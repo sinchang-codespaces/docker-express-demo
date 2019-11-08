@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-demo
+spec:
+  selector:
+      matchLabels:
+        app: express-demo
+  replicas: 1
+  template:
+      metadata:
+        labels:
+            app: express-demo
+      spec:
+        containers:
+        - name: express-demo
+          image:  jeffconatiners.azurecr.io/express-demo:v1
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              port: 3000
+              path: /
+          livenessProbe:
+            httpGet:
+              port: 3000
+              path: /
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
